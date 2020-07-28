@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": [
+            "es6",
+            "es2015"
+        ],
+        "types": [
+            "node"
+        ],
+        "declaration": true,
+        "outDir": "lib",
+        "rootDir": "src",
+        "strict": true,
+    },
+    "exclude": [
+        "lib",
+        "node_modules",
+        "test/**/*.spec.ts"
+    ],
+    "include": [
+        "src"
+    ]
+}
