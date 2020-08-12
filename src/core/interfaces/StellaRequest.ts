@@ -6,7 +6,7 @@ export interface StellaRequest {
     getIp(): string;
     getProtocol(): string;
     getParams(): any;
-    getQueryParams(): object;
+    getQueryParams(): any;
     getBody(): any;
     isFailed(): boolean;
     setFailed(status: boolean): void;
