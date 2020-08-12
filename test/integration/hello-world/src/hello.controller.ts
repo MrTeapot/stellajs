@@ -5,6 +5,7 @@ import { WorldSchema } from "./world.schema";
 import { LoggerMiddleware } from "./logger.middleware";
 import { UseMiddleware } from "../../../../src/core/decorators/UseMiddleware";
 import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
+import { User, RequestData } from "./req-data.middleware";
 
 @Controller("/hello")
 @UseMiddleware(LoggerMiddleware)
@@ -34,10 +35,9 @@ export class HelloController {
     method: HTTPMethod.GET,
     path: '/req-data'
   })
+  @UseMiddleware(RequestData)
   public async reqDataTest(req: StellaRequest) {
-    return {
-      hello: req.getData('user')
-    }
+    return req.getData<User>('user');
   }
 
   @Endpoint({

@@ -11,6 +11,6 @@ export interface StellaRequest {
     isFailed(): boolean;
     setFailed(status: boolean): void;
     getPath(): string;
-    setData(key: string, value: any): void;
-    getData(key: string): any;
+    setData<T>(key: string, value: any): void;
+    getData<T>(key: string): T;
 }

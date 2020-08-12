@@ -8,7 +8,7 @@ export abstract class AbstractRequest implements StellaRequest {
         this.req['__' + key] = value;
     }
 
-    getData(key: string): any {
+    getData<T>(key: string): T {
         return this.req['__' + key];
     }
 

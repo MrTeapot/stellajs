@@ -2,7 +2,7 @@ import { Server } from "http";
 import { StellaResponse } from "../interfaces/StellaResponse";
 import cors from "cors";
 import helmet from "helmet";
-import { AbstractRequest } from './AbstractRequest';
+import { AbstractRequest } from "./AbstractRequest";
 
 import {
   fastify,
@@ -56,7 +56,11 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
     );
   }
 
-  private registerRoute(method: HTTPMethod, path: string, { handler, before, after }: HandlerAndMiddleware) {
+  private registerRoute(
+    method: HTTPMethod,
+    path: string,
+    { handler, before, after }: HandlerAndMiddleware
+  ) {
     this.fastify.register((fastify, opts, done) => {
       after = after.map((after) => this.afterWrapper(after));
       fastify[method](this.normalizePath(path), {
@@ -64,10 +68,7 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
         onResponse: after,
       });
 
-      fastify.use(
-        path,
-        before
-      );
+      fastify.use(path, before);
 
       done();
     });
@@ -96,6 +97,7 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
   middlewareFactory(middleWareFunction: Function) {
     const that = this;
     return function (req: FastifyRequest, res: FastifyReply, next: Function) {
+      debugger;
       const stellaRequest = that.getRequestWrapper(req, res);
       const stellaResponse = that.getResponseWrapper(req, res);
       return middleWareFunction(stellaRequest, stellaResponse, next);
@@ -154,7 +156,6 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
 }
 
 class FastifyRequestWrapper extends AbstractRequest {
-
   constructor(protected req: any) {
     super(req);
   }
@@ -164,13 +165,22 @@ class FastifyRequestWrapper extends AbstractRequest {
     return "";
   }
 
+  getData<T>(key: string): T {
+    let data = this.req["__" + key];
+    if (data) {
+      return data;
+    } else {
+      return this.req.raw["__" + key];
+    }
+  }
+
   getPath() {
     return this.req.originalUrl || this.req.url;
   }
 }
 
 class FastifyResponseWrapper implements StellaResponse {
-  constructor(private res: FastifyReply) { }
+  constructor(private res: FastifyReply) {}
 
   send(json: string) {
     this.res.send(json);
