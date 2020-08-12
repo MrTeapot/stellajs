@@ -1,8 +1,8 @@
 import { Server } from "http";
-import { StellaRequest } from "../interfaces/StellaRequest";
 import { StellaResponse } from "../interfaces/StellaResponse";
 import cors from "cors";
 import helmet from "helmet";
+import { AbstractRequest } from './AbstractRequest';
 
 import {
   fastify,
@@ -74,23 +74,23 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
   }
 
   get(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.registerRoute(HTTPMethod.GET, path, {handler, before, after});
+    this.registerRoute(HTTPMethod.GET, path, { handler, before, after });
   }
 
   put(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.registerRoute(HTTPMethod.PUT, path, {handler, before, after});
+    this.registerRoute(HTTPMethod.PUT, path, { handler, before, after });
   }
 
   post(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.registerRoute(HTTPMethod.POST, path, {handler, before, after});
+    this.registerRoute(HTTPMethod.POST, path, { handler, before, after });
   }
 
   patch(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.registerRoute(HTTPMethod.PATCH, path, {handler, before, after});
+    this.registerRoute(HTTPMethod.PATCH, path, { handler, before, after });
   }
 
   delete(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.registerRoute(HTTPMethod.DELETE, path, {handler, before, after});
+    this.registerRoute(HTTPMethod.DELETE, path, { handler, before, after });
   }
 
   middlewareFactory(middleWareFunction: Function) {
@@ -153,46 +153,15 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
   }
 }
 
-class FastifyRequestWrapper implements StellaRequest {
-  constructor(private req: any) {}
+class FastifyRequestWrapper extends AbstractRequest {
 
-  isFailed() {
-    return this.req.__isFailed;
-  }
-
-  setFailed(status: boolean) {
-    this.req.__isFailed = status;
-  }
-
-  getParams() {
-    const params: any = this.req.params;
-    return params;
-  }
-
-  getQueryParams(): object {
-    const query: any = this.req.query;
-    return query;
+  constructor(protected req: any) {
+    super(req);
   }
 
   getProtocol() {
     throw new Error("Not implemented in Fastify");
     return "";
-  }
-
-  getHeader(key: string) {
-    return this.req.headers[key];
-  }
-
-  getBody() {
-    return this.req.body;
-  }
-
-  getHostname() {
-    return this.req.hostname;
-  }
-
-  getIp() {
-    return this.req.ip;
   }
 
   getPath() {
@@ -201,7 +170,7 @@ class FastifyRequestWrapper implements StellaRequest {
 }
 
 class FastifyResponseWrapper implements StellaResponse {
-  constructor(private res: FastifyReply) {}
+  constructor(private res: FastifyReply) { }
 
   send(json: string) {
     this.res.send(json);

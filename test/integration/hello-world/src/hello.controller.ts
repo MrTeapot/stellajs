@@ -32,6 +32,16 @@ export class HelloController {
 
   @Endpoint({
     method: HTTPMethod.GET,
+    path: '/req-data'
+  })
+  public async reqDataTest(req: StellaRequest) {
+    return {
+      hello: req.getData('user')
+    }
+  }
+
+  @Endpoint({
+    method: HTTPMethod.GET,
     path: '/teapot',
     httpStatusCode: 418
   })

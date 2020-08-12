@@ -14,7 +14,7 @@ import { AbstractHTTPAdapter } from "../http/AbstractAdapter";
 
 @injectable()
 export class ControllerResolver {
-  constructor(@inject("HTTPAdapter") private HTTPAdapter: AbstractHTTPAdapter) {}
+  constructor(@inject("HTTPAdapter") private HTTPAdapter: AbstractHTTPAdapter) { }
 
   resolve(controllers: constructor<any>[]) {
     const controllerInstances = controllers.map((controller) =>

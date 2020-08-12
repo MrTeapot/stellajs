@@ -7,6 +7,7 @@ import { StellaRequest } from "../interfaces/StellaRequest";
 import { StellaResponse } from "../interfaces/StellaResponse";
 import helmet from 'helmet';
 import { AbstractHTTPAdapter, HandlerAndMiddleware } from "./AbstractAdapter";
+import { AbstractRequest } from "./AbstractRequest";
 
 export type Handler = (req: Request, res: Response, next: NextFunction) => void;
 
@@ -24,7 +25,7 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     this.expressApp.use(bodyParser.json());
   }
 
-  async build() {}
+  async build() { }
 
   async start(port: number) {
     this.expressApp.use(this[404]);
@@ -50,24 +51,24 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     this.expressApp.use(path, before);
   }
 
-  get(path: string, {handler, before, after}: HandlerAndMiddleware) {
-    this.expressApp.get(path, ...[...before, handler, ...after, () => {}])
+  get(path: string, { handler, before, after }: HandlerAndMiddleware) {
+    this.expressApp.get(path, ...[...before, handler, ...after, () => { }])
   }
 
-  put(path: string, {handler, before, after}: HandlerAndMiddleware) {
-    this.expressApp.put(path, ...[...before, handler, ...after, () => {}])
+  put(path: string, { handler, before, after }: HandlerAndMiddleware) {
+    this.expressApp.put(path, ...[...before, handler, ...after, () => { }])
   }
 
-  post(path: string, {handler, before, after}: HandlerAndMiddleware) {
-    this.expressApp.post(path, ...[...before, handler, ...after, () => {}])
+  post(path: string, { handler, before, after }: HandlerAndMiddleware) {
+    this.expressApp.post(path, ...[...before, handler, ...after, () => { }])
   }
 
-  patch(path: string, {handler, before, after}: HandlerAndMiddleware) {
-    this.expressApp.post(path, ...[...before, handler, ...after, () => {}])
+  patch(path: string, { handler, before, after }: HandlerAndMiddleware) {
+    this.expressApp.post(path, ...[...before, handler, ...after, () => { }])
   }
 
-  delete(path: string, {handler, before, after}: HandlerAndMiddleware) {
-    this.expressApp.delete(path, ...[...before, handler, ...after, () => {}])
+  delete(path: string, { handler, before, after }: HandlerAndMiddleware) {
+    this.expressApp.delete(path, ...[...before, handler, ...after, () => { }])
   }
 
   private defaultErrorHandler(
@@ -89,10 +90,10 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
 
   middlewareFactory(middleWareFunction: Function) {
     const that = this;
-    return function(req: Request, res: Response, next: Function) {
-        const stellaRequest = that.getRequestWrapper(req);
-        const stellaResponse = that.getResponseWrapper(req, res);
-        return middleWareFunction(stellaRequest, stellaResponse, next);
+    return function (req: Request, res: Response, next: Function) {
+      const stellaRequest = that.getRequestWrapper(req);
+      const stellaResponse = that.getResponseWrapper(req, res);
+      return middleWareFunction(stellaRequest, stellaResponse, next);
     }
   }
 
@@ -117,48 +118,14 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
 
 }
 
-class ExpressRequestWrapper implements StellaRequest {
+class ExpressRequestWrapper extends AbstractRequest {
 
-  constructor(private req: any) {}
-
-  isFailed() {
-    return this.req.__isFailed;
-  }
-
-  setFailed(status: boolean) {
-    this.req.__isFailed = status;
-  }
-
-  getParams() {
-    return this.req.params;
-  }
-
-  getQueryParams() {
-    return this.req.query;
+  constructor(protected req: any) {
+    super(req);
   }
 
   getProtocol() {
     return this.req.protocol;
-  }
-
-  getHeader(key: string) {
-    return this.req.headers[key];
-  }
-
-  getBody() {
-    return this.req.body;
-  }
-
-  getCookie(key: string) {
-    return this.req.cookies[key];
-  }
-
-  getHostname() {
-    return this.req.hostname;
-  }
-
-  getIp() {
-    return this.req.ip
   }
 
   getPath() {
@@ -170,7 +137,7 @@ class ExpressResponseWrapper implements StellaResponse {
   constructor(private res: Response) {
   }
 
-  send(json:string) {
+  send(json: string) {
     this.res.send(json);
   }
 
@@ -185,5 +152,5 @@ class ExpressResponseWrapper implements StellaResponse {
   setHeader(key: string, value: string) {
     this.res.setHeader(key, value);
   }
-  
+
 }
