@@ -16,6 +16,6 @@ export class RequestData implements StellaMiddleware {
       name: 'Hello',
       hello: 'world'
     });
-    next();
+    await next();
   }
 }

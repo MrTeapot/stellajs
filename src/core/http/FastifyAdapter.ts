@@ -119,15 +119,6 @@ class FastifyRequestWrapper extends AbstractRequest {
     return "";
   }
 
-  getData<T>(key: string): T {
-    let data = this.req["__" + key];
-    if (data) {
-      return data;
-    } else {
-      return this.req.raw["__" + key];
-    }
-  }
-
   getPath() {
     return this.req.originalUrl || this.req.url;
   }

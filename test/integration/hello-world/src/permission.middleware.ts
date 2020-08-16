@@ -7,6 +7,6 @@ import { Service } from "../../../../src/core/decorators/Service";
 @Service()
 export class PermissionMiddleware implements StellaMiddleware {
   async before(req: StellaRequest, res: StellaResponse, next: NextFunction) {
-    next();
+    await next();
   }
 }

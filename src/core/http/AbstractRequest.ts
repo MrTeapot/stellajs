@@ -2,22 +2,25 @@ import { StellaRequest } from "../interfaces";
 
 export abstract class AbstractRequest implements StellaRequest {
 
+    private requestData: any = {};
+    private hasFailed: boolean = false;
+
     constructor(protected req: any) { }
 
     setData(key: string, value: any): void {
-        this.req['__' + key] = value;
+        this.requestData[key] = value;
     }
 
     getData<T>(key: string): T {
-        return this.req['__' + key];
+        return this.requestData[key];
     }
 
     isFailed() {
-        return this.req.__isFailed;
+        return this.hasFailed;
     }
 
     setFailed(status: boolean) {
-        this.req.__isFailed = status;
+        this.hasFailed = status;
     }
 
     getParams() {
