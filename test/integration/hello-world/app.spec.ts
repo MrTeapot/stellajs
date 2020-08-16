@@ -71,7 +71,6 @@ function tests (adapter: constructor<AbstractHTTPAdapter>, adapterName: string) 
 
   it("Should 200 on endpoint with req-data", async () => {
     return request(httpServer).get("/hello/req-data").send({}).expect((res) => {
-      console.log(res.body)
       expect(res.body.name).to.equal('Hello');
       expect(res.body.hello).to.equal('world');
     });

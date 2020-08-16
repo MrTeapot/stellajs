@@ -22,6 +22,4 @@ export abstract class AbstractHTTPAdapter {
   abstract getRequestWrapper(...args: any): StellaRequest;
   abstract getResponseWrapper(...args: any): StellaResponse;
   abstract getNextFunction(...args: any): Function;
-  abstract middlewareFactory(middleWareFunction: Function): Function;
-  abstract applyMiddleware(path: string, before: Function[], method?: HTTPMethod): void;
 }

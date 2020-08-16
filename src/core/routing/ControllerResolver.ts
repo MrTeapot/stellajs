@@ -11,10 +11,14 @@ import {
 } from "../Constants";
 import { inject, injectable, container } from "tsyringe";
 import { AbstractHTTPAdapter } from "../http/AbstractAdapter";
+import { HandlerFactory } from "./HandlerFactory";
 
 @injectable()
 export class ControllerResolver {
-  constructor(@inject("HTTPAdapter") private HTTPAdapter: AbstractHTTPAdapter) { }
+  constructor(
+    @inject("HTTPAdapter") private HTTPAdapter: AbstractHTTPAdapter,
+    private handlerFactory: HandlerFactory
+  ) {}
 
   resolve(controllers: constructor<any>[]) {
     const controllerInstances = controllers.map((controller) =>
@@ -33,26 +37,37 @@ export class ControllerResolver {
       controllerInstance.constructor
     );
 
-    const { controllerBefore } = this.getMiddlewareFunctionsOnController(controllerMetadata);
-    if (controllerBefore.length) {
-      this.HTTPAdapter.applyMiddleware(controllerMetadata.url, controllerBefore);
-    }
+    const { controllerBefore } = this.getMiddlewareFunctionsOnController(
+      controllerMetadata
+    );
 
     endpoints.map((endpoint: EndpointMetadata) => {
-      const { controllerAfter } = this.getMiddlewareFunctionsOnController(controllerMetadata)
-      const { endpointBefore, endpointAfter } = this.getMiddlewareFunctionsOnEndpoint(endpoint);
+      const { controllerAfter } = this.getMiddlewareFunctionsOnController(
+        controllerMetadata
+      );
+      const {
+        endpointBefore,
+        endpointAfter,
+      } = this.getMiddlewareFunctionsOnEndpoint(endpoint);
       const handler = controllerInstance[endpoint.functionName].bind(
         controllerInstance
       );
-      const before = [
-        ...endpointBefore
-      ];
-      const after = [
-        ...controllerAfter,
-        ...endpointAfter
-      ]
+      const before = [...controllerBefore, ...endpointBefore];
+      const after = [...controllerAfter, ...endpointAfter];
       const fullPath = this.getFullPath(controllerMetadata, endpoint);
-      this.HTTPAdapter[endpoint.method](fullPath, { before, handler, after });
+
+      const fullHandler = this.handlerFactory.createHandler({
+        endpointMetadata: endpoint,
+        endpointHandler: handler,
+        beforeHandlers: before,
+        afterHandlers: after,
+      });
+
+      this.HTTPAdapter[endpoint.method](fullPath, {
+        before,
+        handler: fullHandler,
+        after,
+      });
     });
   }
 
@@ -72,11 +87,8 @@ export class ControllerResolver {
         if (!middlewareInstance.before) {
           return;
         }
-        return this.HTTPAdapter.middlewareFactory(
-          middlewareInstance.before.bind(middlewareInstance)
-        )
-      }
-      );
+        return middlewareInstance.before.bind(middlewareInstance)
+      });
 
     const endpointAfter = registeredMiddlewareOnEndpoint
       .map((middleware: constructor<StellaMiddleware>) =>
@@ -89,9 +101,7 @@ export class ControllerResolver {
         if (!middlewareInstance.after) {
           return;
         }
-        return this.HTTPAdapter.middlewareFactory(
-          middlewareInstance.after.bind(middlewareInstance)
-        );
+        return middlewareInstance.after.bind(middlewareInstance);
       });
 
     return {
@@ -101,7 +111,8 @@ export class ControllerResolver {
   }
 
   private getMiddlewareFunctionsOnController(controller: ControllerMetadata) {
-    let controllerMiddleware = Reflect.getMetadata(MIDDLEWARE, controller.class) || [];
+    let controllerMiddleware =
+      Reflect.getMetadata(MIDDLEWARE, controller.class) || [];
     const controllerBefore = controllerMiddleware
       .map((middleware: constructor<StellaMiddleware>) =>
         container.resolve(middleware)
@@ -113,11 +124,8 @@ export class ControllerResolver {
         if (!middlewareInstance.before) {
           return;
         }
-        return this.HTTPAdapter.middlewareFactory(
-          middlewareInstance.before.bind(middlewareInstance)
-        )
-      }
-      );
+        return middlewareInstance.before.bind(middlewareInstance);
+      });
 
     const controllerAfter = controllerMiddleware
       .map((middleware: constructor<StellaMiddleware>) =>
@@ -130,9 +138,7 @@ export class ControllerResolver {
         if (!middlewareInstance.after) {
           return;
         }
-        return this.HTTPAdapter.middlewareFactory(
-          middlewareInstance.after.bind(middlewareInstance)
-        );
+        return middlewareInstance.after.bind(middlewareInstance);
       });
 
     return {

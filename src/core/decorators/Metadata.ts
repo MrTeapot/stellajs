@@ -1,15 +1,16 @@
+
 export const Metadata = <Key = string, Value = any>(
-  metadataKey: Key,
-  metadataValue: Value,
+  key: Key,
+  value: Value
 ) => {
   const decoratorFactory = (target: object, key?: any, descriptor?: any) => {
     if (descriptor) {
-      Reflect.defineMetadata(metadataKey, metadataValue, descriptor.value);
+      Reflect.defineMetadata(key, value, descriptor.value);
       return descriptor;
     }
-    Reflect.defineMetadata(metadataKey, metadataValue, target);
+    Reflect.defineMetadata(key, value, target);
     return target;
   };
-  decoratorFactory.KEY = metadataKey;
+  decoratorFactory.KEY = key;
   return decoratorFactory;
 };

@@ -5,7 +5,6 @@ function Service(singleton: boolean = true) {
     constructor: T
   ) {
     
-    // Make the controller an injectable service
     if (singleton) {
       single()(constructor);
     } else {

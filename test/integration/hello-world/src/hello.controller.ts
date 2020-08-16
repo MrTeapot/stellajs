@@ -25,7 +25,7 @@ export class HelloController {
     method: HTTPMethod.POST,
     schema: WorldSchema,
   })
-  public createWorld(req: StellaRequest) {
+  public async createWorld(req: StellaRequest) {
     return {
       hello: 'world'
     }

@@ -5,18 +5,17 @@ import { ENDPOINT_METADATA } from "../Constants";
 import { EndpointOptions } from "../interfaces/EndpointOptions";
 import { EndpointMetadata } from "../interfaces/EndpointMetadata";
 import { StellaRequest } from "../interfaces/StellaRequest";
-import { container } from "tsyringe";
-import { AbstractHTTPAdapter } from "../http/AbstractAdapter";
+import { StellaResponse } from "../interfaces/StellaResponse";
 
 export enum HTTPMethod {
   GET = "get",
   PUT = "put",
   POST = "post",
   DELETE = "delete",
-  PATCH = "patch",
+  PATCH = "patch"
 }
 
-export type StellaEndpoint = (req:StellaRequest) => any;
+export type StellaEndpoint = (req: StellaRequest) => any;
 
 /**
  * A method decorator that wraps the method in try/catch and passes errors to error
@@ -34,21 +33,17 @@ export function Endpoint(options: EndpointOptions) {
         jsonPointers: true,
         allErrors: true,
       });
-
       var validate = ajv.compile(options.schema);
     }
 
     descriptor.value = async function (
-      ...args: any
+      req: StellaRequest,
+      res: StellaResponse,
+      next: any
     ) {
-      const httpAdapter = container.resolve<AbstractHTTPAdapter>("HTTPAdapter");
-      const stellaRequest = httpAdapter.getRequestWrapper(...args);
-      const stellaResponse = httpAdapter.getResponseWrapper(...args);
-      const stellaNextFunction = httpAdapter.getNextFunction(...args);
-
       try {
         if (options.schema) {
-          const valid = validate(stellaRequest.getBody());
+          const valid = validate(req.getBody());
           if (
             !valid &&
             validate.errors !== null &&
@@ -60,7 +55,7 @@ export function Endpoint(options: EndpointOptions) {
           }
         }
 
-        const data = await originalMethod.apply(this, [stellaRequest]);
+        const data = await originalMethod.apply(this, [req]);
 
         let statusCode: number | undefined = options.httpStatusCode;
 
@@ -73,20 +68,11 @@ export function Endpoint(options: EndpointOptions) {
               statusCode = 200;
           }
         }
-        stellaResponse.setStatus(statusCode);
-        stellaResponse.send(data);
-        
-        if(stellaNextFunction) {
-          stellaNextFunction();
-        }
-
+        res.setStatus(statusCode);
+        res.send(data);
+        await next();
       } catch (err) {
-        stellaRequest.setFailed(true);
-        if(stellaNextFunction) {
-          stellaNextFunction(err);
-        } else {
-          throw err;
-        }
+        await next(err);
       }
     };
 
@@ -97,7 +83,7 @@ export function Endpoint(options: EndpointOptions) {
         path: options.path || "",
         controller: target.constructor,
         target: target,
-        functionName: propertyKey
+        functionName: propertyKey,
       },
     ];
 

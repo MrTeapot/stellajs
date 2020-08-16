@@ -48,29 +48,15 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
     return path === "/*" ? "" : path;
   }
 
-  public applyMiddleware(path: string, before: Function[], method: HTTPMethod) {
-    //console.log('registering', path, method);
-    this.fastify.use(
-      path,
-      before.map((before) => this.checkMethod(method, before))
-    );
-  }
-
   private registerRoute(
-    method: HTTPMethod,
+    method: any,
     path: string,
     { handler, before, after }: HandlerAndMiddleware
   ) {
-    this.fastify.register((fastify, opts, done) => {
-      after = after.map((after) => this.afterWrapper(after));
-      fastify[method](this.normalizePath(path), {
-        handler: handler,
-        onResponse: after,
-      });
-
-      fastify.use(path, before);
-
-      done();
+    this.fastify.route({
+      url: this.normalizePath(path),
+      method: method.toUpperCase(),
+      handler,
     });
   }
 
@@ -94,16 +80,6 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
     this.registerRoute(HTTPMethod.DELETE, path, { handler, before, after });
   }
 
-  middlewareFactory(middleWareFunction: Function) {
-    const that = this;
-    return function (req: FastifyRequest, res: FastifyReply, next: Function) {
-      debugger;
-      const stellaRequest = that.getRequestWrapper(req, res);
-      const stellaResponse = that.getResponseWrapper(req, res);
-      return middleWareFunction(stellaRequest, stellaResponse, next);
-    };
-  }
-
   getRequestWrapper(req: FastifyRequest, res: FastifyReply) {
     return new FastifyRequestWrapper(req);
   }
@@ -114,28 +90,6 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
 
   getNextFunction(req: Request, res: Response, next: Function) {
     return next;
-  }
-
-  private checkMethod(method: HTTPMethod, cb: Function) {
-    return function (req: FastifyRequest, res: FastifyReply, next: Function) {
-      if (!method || req.method === method.toUpperCase()) {
-        return cb(req, res, next);
-      } else {
-        next();
-      }
-    };
-  }
-
-  private afterWrapper(cb: Function) {
-    const that = this;
-    return function (req: FastifyRequest, res: FastifyReply, next: Function) {
-      const stellaRequest = that.getRequestWrapper(req, res);
-      if (!stellaRequest.isFailed()) {
-        return cb(req, res, next);
-      } else {
-        next();
-      }
-    };
   }
 
   private defaultErrorHandler(

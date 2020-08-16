@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { AppError, NotFound } from "../exceptions";
 import { Server } from "http";
-import { StellaRequest } from "../interfaces/StellaRequest";
 import { StellaResponse } from "../interfaces/StellaResponse";
 import helmet from 'helmet';
 import { AbstractHTTPAdapter, HandlerAndMiddleware } from "./AbstractAdapter";
@@ -52,23 +51,23 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
   }
 
   get(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.get(path, ...[...before, handler, ...after, () => { }])
+    this.expressApp.get(path, handler)
   }
 
   put(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.put(path, ...[...before, handler, ...after, () => { }])
+    this.expressApp.put(path, handler)
   }
 
   post(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.post(path, ...[...before, handler, ...after, () => { }])
+    this.expressApp.post(path, handler)
   }
 
   patch(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.post(path, ...[...before, handler, ...after, () => { }])
+    this.expressApp.post(path, handler)
   }
 
   delete(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.delete(path, ...[...before, handler, ...after, () => { }])
+    this.expressApp.delete(path, handler)
   }
 
   private defaultErrorHandler(
@@ -85,15 +84,6 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
       });
     } else {
       res.status(500);
-    }
-  }
-
-  middlewareFactory(middleWareFunction: Function) {
-    const that = this;
-    return function (req: Request, res: Response, next: Function) {
-      const stellaRequest = that.getRequestWrapper(req);
-      const stellaResponse = that.getResponseWrapper(req, res);
-      return middleWareFunction(stellaRequest, stellaResponse, next);
     }
   }
 
