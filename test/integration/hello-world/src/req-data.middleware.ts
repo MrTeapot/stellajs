@@ -12,7 +12,7 @@ export interface User {
 export class RequestData implements StellaMiddleware {
 
   async before(req: StellaRequest, res: StellaResponse, next: NextFunction) {
-    req.setData<User>('user', {
+    req.setData('user', {
       name: 'Hello',
       hello: 'world'
     });

@@ -69,11 +69,19 @@ function tests (adapter: constructor<AbstractHTTPAdapter>, adapterName: string) 
     });
   });
 
-  it("Should 200 on endpoint with req-data", async () => {
+  it("Should return user on endpoint with req-data", async () => {
     return request(httpServer).get("/hello/req-data").send({}).expect((res) => {
       expect(res.body.name).to.equal('Hello');
       expect(res.body.hello).to.equal('world');
     });
+  });
+
+  it("Should return 403 on endpoint with permission controll", async () => {
+    return request(httpServer).get("/hello/forbidden").send({}).expect(403);
+  });
+
+  it("Should return 200 on endpoint with permission controll but valid header", async () => {
+    return request(httpServer).get("/hello/forbidden").set('permission', 'king').send({}).expect(200);
   });
 
 });

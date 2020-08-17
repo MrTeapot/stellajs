@@ -6,6 +6,8 @@ import { LoggerMiddleware } from "./logger.middleware";
 import { UseMiddleware } from "../../../../src/core/decorators/UseMiddleware";
 import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
 import { User, RequestData } from "./req-data.middleware";
+import { PermissionMiddleware } from "./permission.middleware";
+import { Permission } from "./permission.decorator";
 
 @Controller("/hello")
 @UseMiddleware(LoggerMiddleware)
@@ -42,6 +44,16 @@ export class HelloController {
 
   @Endpoint({
     method: HTTPMethod.GET,
+    path: '/forbidden'
+  })
+  @UseMiddleware(PermissionMiddleware)
+  @Permission('king')
+  public async forbidden(req: StellaRequest) {
+    return '';
+  }
+
+  @Endpoint({
+    method: HTTPMethod.GET,
     path: '/teapot',
     httpStatusCode: 418
   })
@@ -55,7 +67,6 @@ export class HelloController {
     method: HTTPMethod.GET,
     path: '/:id'
   })
-  @UseMiddleware(LoggerMiddleware)
   public async helloWorldParam(req: StellaRequest) {
     return {
       hello: req.getParams().id

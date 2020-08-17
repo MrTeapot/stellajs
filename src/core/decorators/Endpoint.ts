@@ -80,6 +80,7 @@ export function Endpoint(options: EndpointOptions) {
       ...(Reflect.getMetadata(ENDPOINT_METADATA, target.constructor) || []),
       {
         method: options.method,
+        originalHandler: originalMethod,
         path: options.path || "",
         controller: target.constructor,
         target: target,

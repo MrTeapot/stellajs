@@ -4,6 +4,7 @@ export abstract class AbstractRequest implements StellaRequest {
 
     private requestData: any = {};
     private hasFailed: boolean = false;
+    private handler: any;
 
     constructor(protected req: any) { }
 
@@ -57,5 +58,13 @@ export abstract class AbstractRequest implements StellaRequest {
 
     getPath() {
         return this.req.originalUrl;
+    }
+
+    getMetadata<T>(key: string): T {
+        return Reflect.getMetadata(key, this.handler)
+    }
+
+    setHandler(handler: Function) {
+        this.handler = handler;
     }
 }
