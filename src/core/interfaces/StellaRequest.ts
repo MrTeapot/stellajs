@@ -8,11 +8,10 @@ export interface StellaRequest {
     getParams(): any;
     getQueryParams(): any;
     getBody(): any;
-    isFailed(): boolean;
-    setFailed(status: boolean): void;
     getPath(): string;
     setData(key: string, value: any): void;
     getData<T>(key: string): T;
     setHandler(handler: Function): void;
+    setControllerConstructor(handler: Function): void;
     getMetadata<T>(key: string): any;
 }

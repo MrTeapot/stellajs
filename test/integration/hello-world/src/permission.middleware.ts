@@ -9,7 +9,7 @@ import { Forbidden } from "../../../../src/core/exceptions";
 export class PermissionMiddleware implements StellaMiddleware {
   async before(req: StellaRequest, res: StellaResponse, next: NextFunction) {
     const roles = req.getMetadata<string>("permission");
-    if (req.getHeader("permission") === "king") {
+    if (req.getHeader("permission") === roles) {
       return await next();
     }
     throw new Forbidden();

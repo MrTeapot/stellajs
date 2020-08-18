@@ -76,7 +76,7 @@ function tests (adapter: constructor<AbstractHTTPAdapter>, adapterName: string) 
     });
   });
 
-  it("Should return 403 on endpoint with permission controll", async () => {
+  it("Should return 403 on endpoint with permission control", async () => {
     return request(httpServer).get("/hello/forbidden").send({}).expect(403);
   });
 

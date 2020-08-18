@@ -3,8 +3,8 @@ import { StellaRequest } from "../interfaces";
 export abstract class AbstractRequest implements StellaRequest {
 
     private requestData: any = {};
-    private hasFailed: boolean = false;
     private handler: any;
+    private controllerConstructor: any;
 
     constructor(protected req: any) { }
 
@@ -14,14 +14,6 @@ export abstract class AbstractRequest implements StellaRequest {
 
     getData<T>(key: string): T {
         return this.requestData[key];
-    }
-
-    isFailed() {
-        return this.hasFailed;
-    }
-
-    setFailed(status: boolean) {
-        this.hasFailed = status;
     }
 
     getParams() {
@@ -61,10 +53,14 @@ export abstract class AbstractRequest implements StellaRequest {
     }
 
     getMetadata<T>(key: string): T {
-        return Reflect.getMetadata(key, this.handler)
+        return Reflect.getMetadata(key, this.handler) || Reflect.getMetadata(key, this.controllerConstructor)
     }
 
     setHandler(handler: Function) {
         this.handler = handler;
+    }
+
+    setControllerConstructor(constructor: Function) {
+        this.controllerConstructor = constructor;
     }
 }

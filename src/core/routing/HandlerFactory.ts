@@ -28,7 +28,8 @@ export class HandlerFactory {
       const stack = [...beforeHandlers, endpointHandler, ...afterHandlers];
 
       const stellaRequest = that.httpAdapter.getRequestWrapper(...args);
-      stellaRequest.setHandler(endpointMetadata.originalHandler)
+      stellaRequest.setHandler(endpointMetadata.originalHandler);
+      stellaRequest.setControllerConstructor(endpointMetadata.controller);
       const stellaResponse = that.httpAdapter.getResponseWrapper(...args);
 
       try {
