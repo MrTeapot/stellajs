@@ -75,7 +75,6 @@ export class ControllerResolver {
     let registeredMiddlewareOnEndpoint =
       Reflect.getMetadata(MIDDLEWARE, endpoint.target, endpoint.functionName) ||
       [];
-
     const endpointBefore = registeredMiddlewareOnEndpoint
       .map((middleware: constructor<StellaMiddleware>) =>
         container.resolve(middleware)

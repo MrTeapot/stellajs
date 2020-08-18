@@ -1,10 +1,15 @@
-
 export const Metadata = <Key = string, Value = any>(
   metadataKey: Key,
-  value: Value
+  value: Value,
+  additionalDecorators?: Function[]
 ) => {
   const decoratorFactory = (target: object, key?: any, descriptor?: any) => {
-    debugger
+    additionalDecorators?.map((decorator) => {
+      const func = decorator(target, key);
+      if (typeof func === "function") {
+        func(target, key);
+      }
+    });
     if (descriptor) {
       Reflect.defineMetadata(metadataKey, value, descriptor.value);
       return descriptor;
