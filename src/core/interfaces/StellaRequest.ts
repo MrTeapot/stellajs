@@ -13,5 +13,5 @@ export interface StellaRequest {
     getData<T>(key: string): T;
     setHandler(handler: Function): void;
     setControllerConstructor(handler: Function): void;
-    getMetadata<T>(key: string): any;
+    getMetadata<T>(key: string): T;
 }
