@@ -71,4 +71,14 @@ export class HelloController {
     }
   }
 
+  @Endpoint({
+    method: HTTPMethod.PATCH,
+    path: '/:id'
+  })
+  public async patchHelloWorld(req: StellaRequest) {
+    return {
+      hello: req.getParams().id
+    }
+  }
+
 }

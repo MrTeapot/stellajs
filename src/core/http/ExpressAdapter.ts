@@ -63,7 +63,7 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
   }
 
   patch(path: string, { handler, before, after }: HandlerAndMiddleware) {
-    this.expressApp.post(path, handler)
+    this.expressApp.patch(path, handler)
   }
 
   delete(path: string, { handler, before, after }: HandlerAndMiddleware) {

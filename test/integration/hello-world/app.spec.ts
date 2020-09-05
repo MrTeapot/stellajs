@@ -69,6 +69,12 @@ function tests (adapter: constructor<AbstractHTTPAdapter>, adapterName: string) 
     });
   });
 
+  it("Should read and return route param on patch", async () => {
+    return request(httpServer).patch("/hello/world2").send({}).expect((res) => {
+      expect(res.body.hello).to.equal('world2');
+    });
+  });
+
   it("Should return user on endpoint with req-data", async () => {
     return request(httpServer).get("/hello/req-data").send({}).expect((res) => {
       expect(res.body.name).to.equal('Hello');
