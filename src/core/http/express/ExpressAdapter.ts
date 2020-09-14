@@ -1,12 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { AppError, NotFound } from "../exceptions";
+import { AppError, NotFound } from "../../exceptions";
 import { Server } from "http";
-import { StellaResponse } from "../interfaces/StellaResponse";
+import { StellaResponse } from "../../interfaces/StellaResponse";
 import helmet from 'helmet';
-import { AbstractHTTPAdapter, HandlerAndMiddleware } from "./AbstractAdapter";
-import { AbstractRequest } from "./AbstractRequest";
+import { AbstractHTTPAdapter, HandlerAndMiddleware } from "../AbstractAdapter";
+import { AbstractRequest } from "../AbstractRequest";
 
 export type Handler = (req: Request, res: Response, next: NextFunction) => void;
 

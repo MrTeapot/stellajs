@@ -1,8 +1,8 @@
 import { Server } from "http";
-import { StellaResponse } from "../interfaces/StellaResponse";
+import { StellaResponse } from "../../interfaces/StellaResponse";
 import cors from "cors";
 import helmet from "helmet";
-import { AbstractRequest } from "./AbstractRequest";
+import { AbstractRequest } from "../AbstractRequest";
 
 import {
   fastify,
@@ -12,10 +12,10 @@ import {
 } from "fastify";
 
 import { Request, Response } from "express";
-import { AppError } from "../exceptions";
+import { AppError } from "../../exceptions";
 import middie from "middie";
-import { HTTPMethod } from "../decorators/Endpoint";
-import { AbstractHTTPAdapter, HandlerAndMiddleware } from "./AbstractAdapter";
+import { HTTPMethod } from "../../decorators/Endpoint";
+import { AbstractHTTPAdapter, HandlerAndMiddleware } from "../AbstractAdapter";
 
 export class FastifyAdapter extends AbstractHTTPAdapter {
   private fastify: FastifyInstance;

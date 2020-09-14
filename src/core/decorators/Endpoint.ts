@@ -55,7 +55,7 @@ export function Endpoint(options: EndpointOptions) {
           }
         }
 
-        const data = await originalMethod.apply(this, [req]);
+        const data = await originalMethod.apply(this, [req, res]);
 
         let statusCode: number | undefined = options.httpStatusCode;
 

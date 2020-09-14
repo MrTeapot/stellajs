@@ -7,6 +7,7 @@ import { UseMiddleware } from "../../../../src/core/decorators/UseMiddleware";
 import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
 import { User, RequestData } from "./req-data.middleware";
 import { Permission } from "./permission.decorator";
+import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
 
 @Controller("/hello")
 @UseMiddleware(LoggerMiddleware)
@@ -39,6 +40,14 @@ export class HelloController {
   @UseMiddleware(RequestData)
   public async reqDataTest(req: StellaRequest) {
     return req.getData<User>('user');
+  }
+
+  @Endpoint({
+    method: HTTPMethod.GET,
+    path: '/header-test'
+  })
+  public async headerTest(req: StellaRequest, res: StellaResponse) {
+    res.setHeader('my-header', 'hello-world')
   }
 
   @Endpoint({

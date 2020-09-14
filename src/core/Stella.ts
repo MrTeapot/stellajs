@@ -4,7 +4,7 @@ import { container } from "tsyringe";
 import { constructor } from "tsyringe/dist/typings/types";
 import { StellaApplicationOptions } from "./interfaces";
 import { ControllerResolver } from "./routing/ControllerResolver";
-import { ExpressAdapter } from "./http/ExpressAdapter";
+import { ExpressAdapter } from "./http/express/ExpressAdapter";
 import { AbstractHTTPAdapter } from "./http/AbstractAdapter";
 
 export class StellaApplication {

@@ -1,2 +1,2 @@
-export * from './FastifyAdapter';
-export * from './ExpressAdapter';
+export * from './fastify/FastifyAdapter';
+export * from './express/ExpressAdapter';
