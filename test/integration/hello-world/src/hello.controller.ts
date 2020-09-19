@@ -44,6 +44,14 @@ export class HelloController {
 
   @Endpoint({
     method: HTTPMethod.GET,
+    path: '/error'
+  })
+  public async errorTest(req: StellaRequest, res: StellaResponse) {
+    throw new Error('This is an error');
+  }
+
+  @Endpoint({
+    method: HTTPMethod.GET,
     path: '/header-test'
   })
   public async headerTest(req: StellaRequest, res: StellaResponse) {

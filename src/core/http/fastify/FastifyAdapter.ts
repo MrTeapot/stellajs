@@ -105,6 +105,18 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
       });
     } else {
       res.status(500);
+      if (process.env.NODE_ENV === 'production') {
+        res.send({
+          sucess: false,
+          errors: ['An unexpected error occured']
+        });
+      } else {
+        res.send({
+          succes: false,
+          errors: [err]
+        })
+      }
+
     }
   }
 }
@@ -125,7 +137,7 @@ class FastifyRequestWrapper extends AbstractRequest {
 }
 
 class FastifyResponseWrapper implements StellaResponse {
-  constructor(private res: FastifyReply) {}
+  constructor(private res: FastifyReply) { }
 
   send(json: string) {
     this.res.send(json);

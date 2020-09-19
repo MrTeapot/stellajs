@@ -86,8 +86,12 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
       return request(httpServer).get("/hello/forbidden").send({}).expect(403);
     });
 
-    it("Should return 200 on endpoint with permission controll but valid header", async () => {
+    it("Should return 200 on endpoint with permission control but valid header", async () => {
       return request(httpServer).get("/hello/forbidden").set('permission', 'king').send({}).expect(200);
+    });
+
+    it("Should return 500 on endpoint that throws error", async () => {
+      return request(httpServer).get("/hello/error").send({}).expect(500);
     });
 
     it("Should return a custom header when set", async () => {

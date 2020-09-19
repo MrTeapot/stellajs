@@ -84,6 +84,19 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
       });
     } else {
       res.status(500);
+      if (process.env.NODE_ENV === 'production') {
+        res.send({
+          sucess: false,
+          errors: ['An unexpected error occured']
+        });
+      } else {
+        res.send({
+          succes: false,
+          errors: [err]
+        })
+      }
+
+
     }
   }
 
