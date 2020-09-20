@@ -10,7 +10,7 @@ export class PermissionMiddleware implements StellaMiddleware {
   async before(req: StellaRequest, res: StellaResponse, next: NextFunction) {
     const roles = req.getMetadata<string>("permission");
     if (req.getHeader("permission") === roles) {
-      return await next();
+      return
     }
     throw new Forbidden();
   }

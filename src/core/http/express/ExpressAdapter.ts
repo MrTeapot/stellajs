@@ -76,6 +76,7 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     res: express.Response,
     next: express.NextFunction
   ) {
+    debugger
     if (err instanceof AppError) {
       res.status(err.statusCode);
       res.send({

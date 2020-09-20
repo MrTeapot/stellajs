@@ -13,7 +13,7 @@ interface HandlerFactoryParams {
 export class HandlerFactory {
   constructor(
     @inject("HTTPAdapter") private httpAdapter: AbstractHTTPAdapter
-  ) {}
+  ) { }
 
   createHandler({
     endpointMetadata,
@@ -23,7 +23,6 @@ export class HandlerFactory {
   }: HandlerFactoryParams) {
     const that = this;
     return async function (...args: any) {
-      let index = 0;
 
       const stack = [...beforeHandlers, endpointHandler, ...afterHandlers];
 
@@ -33,7 +32,9 @@ export class HandlerFactory {
       const stellaResponse = that.httpAdapter.getResponseWrapper(...args);
 
       try {
-        await next();
+        for (let i = 0; i < stack.length; i++) {
+          await stack[i](stellaRequest, stellaResponse);
+        }
       } catch (err) {
         if (args[2]) {
           args[2](err);
@@ -42,14 +43,6 @@ export class HandlerFactory {
         }
       }
 
-      async function next(err?: any) {
-        if (err) {
-          throw err;
-        }
-        if (stack[index]) {
-          await stack[index++](stellaRequest, stellaResponse, next);
-        }
-      }
     };
   }
 }

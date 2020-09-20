@@ -41,39 +41,34 @@ export function Endpoint(options: EndpointOptions) {
       res: StellaResponse,
       next: any
     ) {
-      try {
-        if (options.schema) {
-          const valid = validate(req.getBody());
-          if (
-            !valid &&
-            validate.errors !== null &&
-            validate.errors !== undefined
-          ) {
-            throw new ClientError(
-              transformAjvErrors(validate.errors, options.schema)
-            );
-          }
+      if (options.schema) {
+        const valid = validate(req.getBody());
+        if (
+          !valid &&
+          validate.errors !== null &&
+          validate.errors !== undefined
+        ) {
+          throw new ClientError(
+            transformAjvErrors(validate.errors, options.schema)
+          );
         }
-
-        const data = await originalMethod.apply(this, [req, res]);
-
-        let statusCode: number | undefined = options.httpStatusCode;
-
-        if (!statusCode) {
-          switch (options.method) {
-            case HTTPMethod.POST:
-              statusCode = 201;
-              break;
-            default:
-              statusCode = 200;
-          }
-        }
-        res.setStatus(statusCode);
-        res.send(data);
-        await next();
-      } catch (err) {
-        await next(err);
       }
+
+      const data = await originalMethod.apply(this, [req, res]);
+
+      let statusCode: number | undefined = options.httpStatusCode;
+
+      if (!statusCode) {
+        switch (options.method) {
+          case HTTPMethod.POST:
+            statusCode = 201;
+            break;
+          default:
+            statusCode = 200;
+        }
+      }
+      res.setStatus(statusCode);
+      res.send(data);
     };
 
     const metadata: EndpointMetadata[] = [
