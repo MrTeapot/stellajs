@@ -1,6 +1,6 @@
 {
   "name": "@mrteapot/stellajs",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A nodejs framework for building REST apis",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
