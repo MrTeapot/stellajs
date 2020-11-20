@@ -1,6 +1,6 @@
 import { Server } from "http";
 import { StellaResponse } from "../../interfaces/StellaResponse";
-import cors from "cors";
+import cors from "fastify-cors";
 import helmet from "helmet";
 import { AbstractRequest } from "../AbstractRequest";
 
@@ -31,7 +31,7 @@ export class FastifyAdapter extends AbstractHTTPAdapter {
 
   async start(port: number) {
     this.fastify.setErrorHandler(this.defaultErrorHandler);
-    this.fastify.use(cors());
+    this.fastify.register(cors);
     this.fastify.use(helmet());
     await this.fastify.listen(port);
   }
