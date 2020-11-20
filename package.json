@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "publish:minor": "npm run test:integration && npm run build",
+    "publish:patch": "npm run test:integration && npm run build && npm version patch && npm publish",
     "build:check": "tsc --noEmit",
     "test:unit": "NODE_PATH=./src mocha ./test/unit/**/*.spec.ts --exit || exit 0",
     "test:integration": "NODE_PATH=./src mocha ./test/integration/**/*.spec.ts --exit || exit 0",
