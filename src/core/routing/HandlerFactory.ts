@@ -1,5 +1,5 @@
 import { EndpointMetadata } from "../interfaces";
-import { inject, injectable } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
 import { AbstractHTTPAdapter } from "../http/AbstractAdapter";
 
 interface HandlerFactoryParams {
@@ -15,7 +15,7 @@ export class HandlerFactory {
     @inject("HTTPAdapter") private httpAdapter: AbstractHTTPAdapter
   ) { }
 
-  createHandler({
+  public createHandler({
     endpointMetadata,
     endpointHandler,
     beforeHandlers,
@@ -31,16 +31,14 @@ export class HandlerFactory {
       stellaRequest.setControllerConstructor(endpointMetadata.controller);
       const stellaResponse = that.httpAdapter.getResponseWrapper(...args);
 
+      const exceptionHandler: Function = container.resolve('EXCEPTION_HANDLER');
+
       try {
         for (let i = 0; i < stack.length; i++) {
           await stack[i](stellaRequest, stellaResponse);
         }
       } catch (err) {
-        if (args[2]) {
-          args[2](err);
-        } else {
-          throw err;
-        }
+        await exceptionHandler(stellaRequest, stellaResponse, err);
       }
 
     };

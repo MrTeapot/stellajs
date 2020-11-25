@@ -6,6 +6,6 @@ export * from './ErrorMessage';
 export * from './EndpointOptions';
 export * from './ErrorResponse';
 export * from './ApplicationControllerMetadata';
-export * from './PermissionMiddlewareFactory';
 export * from './EndpointMetadataWithMiddleware';
 export * from './ControllerMetadata';
+export * from './ExceptionHandler';

@@ -8,6 +8,7 @@ import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
 import { User, RequestData } from "./req-data.middleware";
 import { Permission } from "./permission.decorator";
 import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
+import { HelloException } from "./HelloException";
 
 @Controller("/hello")
 @UseMiddleware(LoggerMiddleware)
@@ -48,6 +49,14 @@ export class HelloController {
   })
   public async errorTest(req: StellaRequest, res: StellaResponse) {
     throw new Error('This is an error');
+  }
+
+  @Endpoint({
+    method: HTTPMethod.GET,
+    path: '/hello-error'
+  })
+  public async helloError(req: StellaRequest, res: StellaResponse) {
+    throw new HelloException();
   }
 
   @Endpoint({

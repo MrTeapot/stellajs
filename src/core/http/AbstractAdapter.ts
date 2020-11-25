@@ -1,7 +1,6 @@
 import { Server } from "http";
 import { StellaRequest } from "../interfaces/StellaRequest";
 import { StellaResponse } from "../interfaces/StellaResponse";
-import { HTTPMethod } from "../decorators/Endpoint";
 
 export interface HandlerAndMiddleware {
   handler: any;

@@ -139,12 +139,13 @@ class FastifyRequestWrapper extends AbstractRequest {
 class FastifyResponseWrapper implements StellaResponse {
   constructor(private res: FastifyReply) { }
 
-  send(json: string) {
-    this.res.send(json);
+  send(data: Object) {
+    this.res.send(data);
   }
 
   setStatus(code: number) {
     this.res.status(code);
+    return this;
   }
 
   redirect(url: string) {
@@ -153,5 +154,6 @@ class FastifyResponseWrapper implements StellaResponse {
 
   setHeader(key: string, value: string) {
     this.res.header(key, value);
+    return this;
   }
 }

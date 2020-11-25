@@ -15,10 +15,12 @@ import { HandlerFactory } from "./HandlerFactory";
 
 @injectable()
 export class ControllerResolver {
+
+
   constructor(
     @inject("HTTPAdapter") private HTTPAdapter: AbstractHTTPAdapter,
     private handlerFactory: HandlerFactory
-  ) {}
+  ) { }
 
   resolve(controllers: constructor<any>[]) {
     const controllerInstances = controllers.map((controller) =>

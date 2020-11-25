@@ -1,9 +1,8 @@
 export { StellaApplication } from './Stella'
-export { PermissionMiddlewareFactory } from './interfaces/PermissionMiddlewareFactory'
 export { Controller } from './decorators/Controller'
 export { Service } from './decorators/Service'
 export { UseMiddleware } from './decorators/UseMiddleware'
 export { Endpoint } from './decorators/Endpoint';
-export {FastifyAdapter} from './http';
+export { FastifyAdapter } from './http';
 
 export * from './exceptions'

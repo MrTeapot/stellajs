@@ -5,6 +5,7 @@ import { expect } from "chai";
 import { ExpressAdapter, FastifyAdapter } from "../../../src/core/http";
 import { constructor } from "tsyringe/dist/typings/types";
 import { AbstractHTTPAdapter } from "../../../src/core/http/AbstractAdapter";
+import { HelloExceptionHandler } from './src/ErrorHandler'
 
 tests(ExpressAdapter, 'Express');
 tests(FastifyAdapter, 'Fastify');
@@ -16,8 +17,13 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
     beforeEach(async () => {
       application = new StellaApplication({
         port: 3333,
-        controllers: [HelloController],
-        httpAdapter: adapter
+        controllers: [
+          HelloController
+        ],
+        httpAdapter: adapter,
+        exceptionHandlers: [
+          HelloExceptionHandler
+        ]
       });
       await application.bootstrap();
       httpServer = application.getHTTPServer();
@@ -92,6 +98,13 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
 
     it("Should return 500 on endpoint that throws error", async () => {
       return request(httpServer).get("/hello/error").send({}).expect(500);
+    });
+
+    it("Should run custom exception handler when throwing HelloWorldException", async () => {
+      return request(httpServer).get("/hello/hello-error").send({}).expect((res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.msg).to.equal('Hello Error!');
+      });
     });
 
     it("Should return a custom header when set", async () => {

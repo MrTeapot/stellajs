@@ -76,7 +76,6 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     res: express.Response,
     next: express.NextFunction
   ) {
-    debugger
     if (err instanceof AppError) {
       res.status(err.statusCode);
       res.send({
@@ -96,8 +95,6 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
           errors: [err]
         })
       }
-
-
     }
   }
 
@@ -141,20 +138,22 @@ class ExpressResponseWrapper implements StellaResponse {
   constructor(private res: Response) {
   }
 
-  send(json: string) {
-    this.res.send(json);
+  send(data: Object) {
+    this.res.send(data);
   }
 
-  setStatus(code: number) {
+  setStatus(code: number): any {
     this.res.status(code);
+    return this;
   }
 
   redirect(url: string) {
     this.res.redirect(url);
   }
 
-  setHeader(key: string, value: string) {
+  setHeader(key: string, value: string): any {
     this.res.setHeader(key, value);
+    return this;
   }
 
 }
