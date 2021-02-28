@@ -1,6 +1,6 @@
-import { StellaMiddleware } from "../../../../src/core/interfaces/Middleware";
-import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
-import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
+import { StellaMiddleware } from "../../../../src/interfaces/Middleware";
+import { StellaRequest } from "../../../../src/interfaces/StellaRequest";
+import { StellaResponse } from "../../../../src/interfaces/StellaResponse";
 
 export class LoggerMiddleware implements StellaMiddleware {
 

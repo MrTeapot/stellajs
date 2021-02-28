@@ -13,11 +13,11 @@
         ],
         "declaration": true,
         "outDir": "dist",
-        "rootDir": "src",
+        "rootDir": "lib",
         "strict": true,
         "target": "es6"
     },
     "include": [
-        "src"
+        "lib"
     ]
 }

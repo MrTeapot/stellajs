@@ -1,8 +1,8 @@
-import { AppError } from "../../../../src/core/exceptions";
-import { ExceptionHandler, StellaRequest } from "../../../../src/core/interfaces";
-import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
+import { AppError } from "../../../../src/exceptions";
+import { ExceptionHandler, StellaRequest } from "../../../../src/interfaces";
+import { StellaResponse } from "../../../../src/interfaces/StellaResponse";
 import { HelloException } from "./HelloException";
-import { Catch } from "../../../../src/core/decorators";
+import { Catch } from "../../../../src/decorators";
 
 @Catch(HelloException)
 export class HelloExceptionHandler implements ExceptionHandler {

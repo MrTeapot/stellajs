@@ -1,10 +1,10 @@
-import { StellaApplication } from "../../../src/core";
+import { StellaApplication } from "../../../src";
 import { HelloController } from "./src/hello.controller";
 import request from "supertest";
 import { expect } from "chai";
-import { ExpressAdapter, FastifyAdapter } from "../../../src/core/http";
+import { ExpressAdapter, FastifyAdapter } from "../../../src/http";
 import { constructor } from "tsyringe/dist/typings/types";
-import { AbstractHTTPAdapter } from "../../../src/core/http/AbstractAdapter";
+import { AbstractHTTPAdapter } from "../../../src/http/AbstractAdapter";
 import { HelloExceptionHandler } from './src/ErrorHandler'
 
 tests(ExpressAdapter, 'Express');

@@ -1,9 +1,9 @@
-import { StellaMiddleware } from "../../../../src/core/interfaces/Middleware";
+import { StellaMiddleware } from "../../../../src/interfaces/Middleware";
 import { NextFunction } from "express";
-import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
-import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
-import { Service } from "../../../../src/core/decorators/Service";
-import { Forbidden } from "../../../../src/core/exceptions";
+import { StellaRequest } from "../../../../src/interfaces/StellaRequest";
+import { StellaResponse } from "../../../../src/interfaces/StellaResponse";
+import { Service } from "../../../../src/decorators/Service";
+import { Forbidden } from "../../../../src/exceptions";
 
 @Service()
 export class PermissionMiddleware implements StellaMiddleware {

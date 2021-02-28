@@ -1,13 +1,13 @@
-import { Controller } from "../../../../src/core/decorators/Controller";
-import { Endpoint, HTTPMethod } from "../../../../src/core/decorators/Endpoint";
+import { Controller } from "../../../../src/decorators/Controller";
+import { Endpoint, HTTPMethod } from "../../../../src/decorators/Endpoint";
 import { HelloService } from "./hello.service";
 import { WorldSchema } from "./world.schema";
 import { LoggerMiddleware } from "./logger.middleware";
-import { UseMiddleware } from "../../../../src/core/decorators/UseMiddleware";
-import { StellaRequest } from "../../../../src/core/interfaces/StellaRequest";
+import { UseMiddleware } from "../../../../src/decorators/UseMiddleware";
+import { StellaRequest } from "../../../../src/interfaces/StellaRequest";
 import { User, RequestData } from "./req-data.middleware";
 import { Permission } from "./permission.decorator";
-import { StellaResponse } from "../../../../src/core/interfaces/StellaResponse";
+import { StellaResponse } from "../../../../src/interfaces/StellaResponse";
 import { HelloException } from "./HelloException";
 
 @Controller("/hello")
