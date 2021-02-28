@@ -13,10 +13,9 @@
     "test:unit:coverage": "nyc npm run test:unit --exit || exit 0",
     "test:integration:coverage": "nyc npm run test:integration --exit || exit 0"
   },
-  "files": [
-    "dist",
-    "./dist/index.d.ts"
-  ],
+  "directories": {
+    "src": "src"
+  },
   "publishConfig": {
     "access": "public"
   },
