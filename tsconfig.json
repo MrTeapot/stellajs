@@ -6,12 +6,10 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "outDir": "./dist",
         "sourceMap": true,
         "allowJs": true,
         "importHelpers": true,
-        "types": [
-            "node"
-        ],
         "lib": [
             "es2015",
             "dom"
