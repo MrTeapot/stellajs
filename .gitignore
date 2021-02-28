@@ -2,3 +2,7 @@ node_modules
 dist
 lib
 docs
+# Transpiled files
+**/src/**/*.js
+**/src/**/*.js.map
+**/src/**/*.d.ts

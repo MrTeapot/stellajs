@@ -1,0 +1,12 @@
+# ignore dev files
+src/**/*.ts
+src/**/*.js.map
+
+# not needed npm stuff
+package-lock.json
+node_modules
+tsconfig.json
+tslint.json
+
+# include typings files
+!*.d.ts

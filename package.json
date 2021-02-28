@@ -2,7 +2,7 @@
   "name": "@mrteapot/stellajs",
   "version": "0.0.24",
   "description": "A nodejs framework for building REST apis",
-  "main": "./src/index.ts",
+  "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "scripts": {
     "build": "tsc",
