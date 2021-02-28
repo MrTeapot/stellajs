@@ -7,6 +7,9 @@ package-lock.json
 node_modules
 tsconfig.json
 tslint.json
+docs
+test
+.vscode
 
 # include typings files
 !*.d.ts
