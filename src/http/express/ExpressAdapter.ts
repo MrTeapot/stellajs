@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction } from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import { AppError, NotFound } from "../../exceptions";
 import { Server } from "http";
@@ -21,7 +20,8 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     this.expressApp.enable("trust proxy");
     this.expressApp.use(cors());
     this.expressApp.use(helmet());
-    this.expressApp.use(bodyParser.json());
+    this.expressApp.use(express.raw());
+    this.expressApp.use(express.json());
   }
 
   async build() { }

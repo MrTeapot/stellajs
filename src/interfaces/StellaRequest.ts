@@ -8,7 +8,6 @@ export interface StellaRequest {
     getParams(): any;
     getQueryParams(): any;
     getBody(): any;
-    getRawBody(): any;
     getPath(): string;
     setData(key: string, value: any): void;
     getData<T>(key: string): T;

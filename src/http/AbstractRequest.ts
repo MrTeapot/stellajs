@@ -36,10 +36,6 @@ export abstract class AbstractRequest implements StellaRequest {
     return this.req.body;
   }
 
-  getRawBody() {
-    return this.req.rawBody;
-  }
-
   getCookie(key: string) {
     return this.req.cookies[key];
   }
