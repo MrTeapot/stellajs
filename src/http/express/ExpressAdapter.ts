@@ -6,6 +6,7 @@ import { StellaResponse } from "../../interfaces/StellaResponse";
 import helmet from 'helmet';
 import { AbstractHTTPAdapter, HandlerAndMiddleware } from "../AbstractAdapter";
 import { AbstractRequest } from "../AbstractRequest";
+import bodyParser from 'body-parser';
 
 export type Handler = (req: Request, res: Response, next: NextFunction) => void;
 
@@ -20,8 +21,13 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     this.expressApp.enable("trust proxy");
     this.expressApp.use(cors());
     this.expressApp.use(helmet());
-    this.expressApp.use(express.raw());
-    this.expressApp.use(express.json());
+
+    // Set rawBody
+    this.expressApp.use(bodyParser.json({
+      verify: (req: any, res, buf) => {
+        req.rawBody = buf
+      }
+    }))
   }
 
   async build() { }

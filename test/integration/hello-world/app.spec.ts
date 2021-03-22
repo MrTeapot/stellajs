@@ -41,7 +41,6 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
 
     it("2. Should return world from the createWorld endpoint, status code 201", async () => {
       return request(httpServer).post("/hello").send({ name: "A World" }).expect((res) => {
-        console.log(res.body)
         expect(res.status).to.equal(201);
       });
 
