@@ -1,5 +1,6 @@
 import { StellaApplication } from "../../../src";
 import { HelloController } from "./src/hello.controller";
+import { UploadController } from "./src/upload.controller";
 import request from "supertest";
 import { expect } from "chai";
 import { ExpressAdapter } from "../../../src/http";
@@ -17,7 +18,8 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
       application = new StellaApplication({
         port: 3333,
         controllers: [
-          HelloController
+          HelloController,
+          UploadController
         ],
         httpAdapter: adapter,
         exceptionHandlers: [

@@ -76,6 +76,10 @@ export class ExpressAdapter extends AbstractHTTPAdapter {
     this.expressApp.delete(path, handler)
   }
 
+  use(path: string, middlewareFunction: any) {
+    this.expressApp.use(path, middlewareFunction);
+  }
+
   private defaultErrorHandler(
     err: Error,
     req: express.Request,

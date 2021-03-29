@@ -18,6 +18,7 @@ export abstract class AbstractHTTPAdapter {
   abstract patch(path: string, handlerAndMiddleware: HandlerAndMiddleware): void;
   abstract post(path: string, handlerAndMiddleware: HandlerAndMiddleware): void;
   abstract delete(path: string, handlerAndMiddleware: HandlerAndMiddleware): void;
+  abstract use(path: string, middlewareFunction: Function): void;
   abstract getRequestWrapper(...args: any): StellaRequest;
   abstract getResponseWrapper(...args: any): StellaResponse;
   abstract getNextFunction(...args: any): Function;

@@ -8,10 +8,12 @@ import {
   CONTROLLER_METADATA,
   MIDDLEWARE,
   ENDPOINT_METADATA,
+  UPLOAD,
 } from "../Constants";
 import { inject, injectable, container } from "tsyringe";
 import { AbstractHTTPAdapter } from "../http/AbstractAdapter";
 import { HandlerFactory } from "./HandlerFactory";
+import multer from "multer";
 
 @injectable()
 export class ControllerResolver {
@@ -64,6 +66,13 @@ export class ControllerResolver {
         beforeHandlers: before,
         afterHandlers: after,
       });
+
+      const multerConfig = Reflect.getMetadata(UPLOAD, endpoint.target, endpoint.functionName);
+
+      if (multerConfig) {
+        const multerInstance = multer(multerConfig.options);
+        this.HTTPAdapter.use(endpoint.path, multerInstance.single(multerConfig.fieldName));
+      }
 
       this.HTTPAdapter[endpoint.method](fullPath, {
         before,
