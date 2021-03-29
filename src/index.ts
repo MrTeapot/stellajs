@@ -5,6 +5,7 @@ export { UseMiddleware } from './decorators/UseMiddleware'
 export { Endpoint, HTTPMethod } from './decorators/Endpoint';
 export { Metadata } from './decorators/Metadata'
 export { Catch } from './decorators/Catch'
+export { Upload } from './decorators/Upload'
 export * from './interfaces';
 
 export * from './exceptions'
