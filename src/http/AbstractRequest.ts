@@ -36,6 +36,11 @@ export abstract class AbstractRequest implements StellaRequest {
     return this.req.body;
   }
 
+  // If the @Upload decorator was used, this method will return the uploaded files object
+  getFiles() {
+    return this.req.files || this.req.file;
+  }
+
   getRawBody() {
     return this.req.rawBody;
   }
