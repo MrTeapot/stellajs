@@ -68,10 +68,9 @@ export class ControllerResolver {
       });
 
       const multerConfig = Reflect.getMetadata(UPLOAD, endpoint.target, endpoint.functionName);
-
       if (multerConfig) {
         const multerInstance = multer(multerConfig.options);
-        this.HTTPAdapter.use(endpoint.path, multerInstance.single(multerConfig.fieldName));
+        this.HTTPAdapter.use(fullPath, multerInstance.single(multerConfig.fieldName));
       }
 
       this.HTTPAdapter[endpoint.method](fullPath, {

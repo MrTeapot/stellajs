@@ -7,6 +7,7 @@ import { ExpressAdapter } from "../../../src/http";
 import { constructor } from "tsyringe/dist/typings/types";
 import { AbstractHTTPAdapter } from "../../../src/http/AbstractAdapter";
 import { HelloExceptionHandler } from './src/ErrorHandler'
+import path from 'path';
 
 tests(ExpressAdapter, 'Express');
 
@@ -113,6 +114,17 @@ function tests(adapter: constructor<AbstractHTTPAdapter>, adapterName: string) {
       return request(httpServer).get("/hello/header-test").send({}).expect((res) => {
         expect(res.header['my-header']).to.equal('hello-world');
       });
+    });
+
+    it("16. Should upload a PNG to file system", async () => {
+      const image = path.join(process.cwd(), 'test', 'integration', 'hello-world', 'image.png');
+      console.log(image)
+      return request(httpServer).post("/uploads")
+      .attach('image', image)
+      .expect((res) => {
+        console.log(res.body)
+        expect(res.status).to.equal(201);
+      }); 
     });
 
   });

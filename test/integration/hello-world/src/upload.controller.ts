@@ -14,8 +14,11 @@ export class UploadController {
   @Endpoint({
     method: HTTPMethod.POST
   })
-  @Upload('file')
+  @Upload('image', {
+    dest: './'
+  })
   public async uploadFile(req: StellaRequest) {
+    console.log(req.getFiles(), 'lool')
     return {
       hello: 'world'
     }
